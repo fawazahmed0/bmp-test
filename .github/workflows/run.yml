@@ -3,8 +3,8 @@ name: BuildFiles
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for branch 1 and on start directory, command.txt file changes or by manually running the workflow from actions tab
 on:
-  schedule:
-    - cron: '50 3 * * 1-5'
+# schedule:
+#    - cron: '50 3 * * 1-5'
 
   workflow_dispatch:
 
@@ -43,20 +43,23 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9.12' 
+          python-version: '3.9.12'
+          cache: 'pip'
 
       - uses: actions/setup-node@v3
         with:
           node-version: '18.12.1'
+          cache: 'npm'
 
       - name: Install dependencies
         shell: bash
         run: |
+          pip3 install -r requirements.txt
           brew install tesseract
           brew install tesseract-lang
           brew install poppler
           npm ci
-          pip3 install -r requirements.txt
+
 
       - name: Run Program
         shell: bash
