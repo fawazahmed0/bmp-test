@@ -59,6 +59,7 @@ jobs:
           brew install tesseract-lang
           brew install poppler
           npm ci >/dev/null
+          npx playwright install --with-deps
 
 
       - name: Run Program
