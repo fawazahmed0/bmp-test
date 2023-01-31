@@ -54,11 +54,11 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          pip3 install -r requirements.txt
+          pip3 install -r requirements.txt >/dev/null
           brew install tesseract
           brew install tesseract-lang
           brew install poppler
-          npm ci
+          npm ci >/dev/null
 
 
       - name: Run Program
@@ -74,6 +74,7 @@ jobs:
         run: |
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
+          git pull >/dev/null
           git add -A >/dev/null
           git commit -m 'Generated Files' >/dev/null
           git push >/dev/null
