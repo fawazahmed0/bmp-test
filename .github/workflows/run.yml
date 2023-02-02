@@ -4,7 +4,7 @@ name: BuildFiles
 # events but only for branch 1 and on start directory, command.txt file changes or by manually running the workflow from actions tab
 on:
   schedule:
-    - cron: '51 3 * * 1-5'
+    - cron: '49 3 * * 1-5'
 
   workflow_dispatch:
 
@@ -48,7 +48,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.12.1'
+          node-version: '19.5.0'
           cache: 'npm'
 
       - name: Install dependencies
