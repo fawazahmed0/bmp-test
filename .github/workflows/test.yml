@@ -62,7 +62,7 @@ jobs:
           npx playwright install --with-deps
 
 
-      - name: Run Program
+      - name: Run Test
         shell: bash
         run: |
           npm run test > testlog.txt 2>&1
@@ -70,7 +70,7 @@ jobs:
 
       # commiting and pushing changes
       - name: commit and push
-        if: always()
+        if: failure()
         shell: bash
         run: |
           git config --global user.email github-actions@github.com
