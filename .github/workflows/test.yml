@@ -70,7 +70,7 @@ jobs:
 
       # commiting and pushing changes
       - name: commit and push
-        if: failure()
+        if: always()
         shell: bash
         run: |
           git config --global user.email github-actions@github.com
