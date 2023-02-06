@@ -67,6 +67,11 @@ jobs:
         run: |
           node code/main.js > logfile.txt 2>&1
 
+      - name: Retry Program run if previous failed
+        if: failure()
+        shell: bash
+        run: |
+          node code/main.js > logfile.txt 2>&1
 
       # commiting and pushing changes
       - name: commit and push
