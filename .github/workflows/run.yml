@@ -71,7 +71,7 @@ jobs:
         if: failure()
         shell: bash
         run: |
-          node code/main.js > logfile.txt 2>&1
+          node code/main.js >> logfile.txt 2>&1
 
       # commiting and pushing changes
       - name: commit and push
