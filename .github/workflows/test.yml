@@ -4,7 +4,7 @@ name: TestFiles
 # events but only for branch 1 and on start directory, command.txt file changes or by manually running the workflow from actions tab
 on:
   schedule:
-    - cron: '49 10 * * 1-5'
+    - cron: '49 13 * * 1-5'
 
   workflow_dispatch:
 
