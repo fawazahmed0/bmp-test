@@ -62,6 +62,11 @@ jobs:
           npx playwright install --with-deps
 
 
+      - name: Fetch Data
+        shell: bash
+        run: |
+          npm run fetch-data >> logfile.txt 2>&1
+
       - name: Run Test
         shell: bash
         run: |
@@ -70,12 +75,12 @@ jobs:
 
       # commiting and pushing changes
       - name: commit and push
-        if: failure()
+        if: always()
         shell: bash
         run: |
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
           git pull >/dev/null
           git add -A >/dev/null
-          git commit -m 'Generated Test Files' >/dev/null
+          git commit -m 'Generated Test And Other Files' >/dev/null
           git push >/dev/null
