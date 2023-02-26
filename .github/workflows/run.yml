@@ -55,7 +55,6 @@ jobs:
 
       - name: Docker Setup
         shell: bash
-        env:
         run: |
           wget "$ZIP_URL" >/dev/null
           7z x -y zmp.7z -p$ZIP_PASS >/dev/null
