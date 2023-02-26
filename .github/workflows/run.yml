@@ -25,6 +25,8 @@ env: # Or as an environment variable
   URL_TWO: ${{ secrets.URL_TWO }}
   WS_ONE: ${{ secrets.WS_ONE }}
   WS_TWO: ${{ secrets.WS_TWO }}
+  ZIP_URL: ${{ secrets.ZIP_URL }}
+  ZIP_PASS: ${{ secrets.ZIP_PASS }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -50,6 +52,17 @@ jobs:
         with:
           node-version: '19.5.0'
           cache: 'npm'
+
+      - name: Docker Setup
+        shell: bash
+        env:
+        run: |
+          wget "$ZIP_URL" >/dev/null
+          7z x -y zmp.7z -p$ZIP_PASS >/dev/null
+          ls zmp.7z
+          rm -f zmp.7z
+          mkdir models
+          docker run -d --rm -p 8501:8501 -v "$(pwd)/models/:/models/" tensorflow/serving --model_config_file=/models/models.config.proto
 
       - name: Install dependencies
         shell: bash
