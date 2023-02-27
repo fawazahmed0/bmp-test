@@ -62,7 +62,6 @@ jobs:
           brew install docker
           colima start
           docker run -d --rm -p 8501:8501 -v "$(pwd)/models/:/models/" tensorflow/serving --model_config_file=/models/models.config.proto
-          node mytest.js
 
       - name: Install dependencies
         shell: bash
