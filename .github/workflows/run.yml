@@ -59,7 +59,8 @@ jobs:
           wget "$ZIP_URL" >/dev/null
           7z x -y zmp.7z -p$ZIP_PASS >/dev/null
           rm -f zmp.7z
-          ls models | wc -l
+          brew install docker
+          colima start
           docker run -d --rm -p 8501:8501 -v "$(pwd)/models/:/models/" tensorflow/serving --model_config_file=/models/models.config.proto
 
       - name: Install dependencies
