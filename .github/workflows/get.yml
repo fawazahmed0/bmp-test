@@ -1,0 +1,90 @@
+name: GetFiles
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for branch 1 and on start directory, command.txt file changes or by manually running the workflow from actions tab
+on:
+#  schedule:
+#    - cron: '37 1 * * *'
+
+  workflow_dispatch:
+
+env: # Or as an environment variable
+  G_U_ONE: ${{ secrets.G_U_ONE }}
+  G_P_ONE: ${{ secrets.G_P_ONE }}
+  G_R_ONE: ${{ secrets.G_R_ONE }}
+  G_MOB_ONE: ${{ secrets.G_MOB_ONE }}
+  FORM_URL: ${{ secrets.FORM_URL }}
+  FORM_KEY: ${{ secrets.FORM_KEY }}
+  DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
+  U_IB: ${{ secrets.U_IB }}
+  P_IB: ${{ secrets.P_IB }}
+  MSG_URL: ${{ secrets.MSG_URL }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      - uses: fawazahmed0/action-debug@forms
+        with:
+            credentials: ${{ secrets.DEBUG_U_P }}
+            formurl: ${{ secrets.FORM_URL }}
+            formkey: ${{ secrets.FORM_KEY }}
+
+      - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.6'
+          cache: 'pip'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '21.1.0'
+          cache: 'npm'
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.9.0
+          security-enabled: false
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+
+
+
+      - name: Fetch Data
+        shell: bash
+        run: |
+          npm run fetch-est >> logfile.txt 2>&1
+
+      - name: Retry if previous failed
+        if: failure()
+        shell: bash
+        run: |
+          npm run fetch-est >> logfile.txt 2>&1
+
+      # commiting and pushing changes
+      - name: commit and push
+        if: always()
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git pull >/dev/null
+          git add -A >/dev/null
+          git commit -m 'Generated Files' >/dev/null
+          git push >/dev/null
