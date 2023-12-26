@@ -7,7 +7,7 @@ env:
   FORM_KEY: ${{ secrets.FORM_KEY }}
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
 jobs:
-  build:
+  test:
     runs-on: macos-13
     steps:
       - uses: fawazahmed0/wireit@setup-github-actions-caching
@@ -16,6 +16,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -64,6 +65,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -132,6 +134,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -200,6 +203,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -268,6 +272,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -336,6 +341,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -404,6 +410,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -472,6 +479,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -540,6 +548,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -608,6 +617,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -676,6 +686,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -744,6 +755,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -812,6 +824,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -880,6 +893,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -948,6 +962,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -1016,6 +1031,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -1084,6 +1100,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -1152,6 +1169,7 @@ jobs:
           credentials: ${{ secrets.DEBUG_U_P }}
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
+          name: ${{ github.job }}-${GITHUB_WORKFLOW}
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
