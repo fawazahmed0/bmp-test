@@ -75,6 +75,10 @@ jobs:
   serve0:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -129,7 +133,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -144,6 +148,10 @@ jobs:
   serve1:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -198,7 +206,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -213,6 +221,10 @@ jobs:
   serve2:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -267,7 +279,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -282,6 +294,10 @@ jobs:
   serve3:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -336,7 +352,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -351,6 +367,10 @@ jobs:
   serve4:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -405,7 +425,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -420,6 +440,10 @@ jobs:
   serve5:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -474,7 +498,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -489,6 +513,10 @@ jobs:
   serve6:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -543,7 +571,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -558,6 +586,10 @@ jobs:
   serve7:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -612,7 +644,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -627,6 +659,10 @@ jobs:
   serve8:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -681,7 +717,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -696,6 +732,10 @@ jobs:
   serve9:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -750,7 +790,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -765,6 +805,10 @@ jobs:
   serve10:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -819,7 +863,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -834,6 +878,10 @@ jobs:
   serve11:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -888,7 +936,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -903,6 +951,10 @@ jobs:
   serve12:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -957,7 +1009,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -972,6 +1024,10 @@ jobs:
   serve13:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -1026,7 +1082,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1041,6 +1097,10 @@ jobs:
   serve14:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -1095,7 +1155,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1110,6 +1170,10 @@ jobs:
   serve15:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -1164,7 +1228,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1179,6 +1243,10 @@ jobs:
   serve16:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Start Time
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
         with:
@@ -1233,7 +1301,7 @@ jobs:
       - name: Sleep
         shell: bash
         run: |
-          sleep 21200
+          sleep $((21200 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the logfile
         if: always()
         shell: bash
