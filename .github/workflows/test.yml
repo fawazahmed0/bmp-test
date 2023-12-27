@@ -48,11 +48,6 @@ jobs:
         run: |
           node code/server.js > serverlog.txt 2>&1 &
           npm run test > testlog.txt 2>&1
-      - name: Fetch Data
-        if: success() || failure()
-        shell: bash
-        run: |
-          npm run fetch-data > logfile.txt 2>&1
       - name: commit and push
         if: always()
         shell: bash
