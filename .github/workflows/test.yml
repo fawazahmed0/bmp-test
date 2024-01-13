@@ -4,6 +4,7 @@ on:
     - cron: 49 13 * * 1-5
   workflow_dispatch: null
 env:
+  ZIP_URL: ${{ secrets.ZIP_URL }}
   ZIP_PASS: ${{ secrets.ZIP_PASS }}
   FORM_URL: ${{ secrets.FORM_URL }}
   FORM_KEY: ${{ secrets.FORM_KEY }}
@@ -19,10 +20,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -43,16 +45,19 @@ jobs:
         shell: bash
         run: |
           diskutil erasevolume HFS+ MY_RAM_DISK $(hdiutil attach -nobrowse -nomount ram://2097152)
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Test
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
+          sleep 60
           npm run test > testlog.txt 2>&1
-      - name: Fetch Data
-        if: success() || failure()
-        shell: bash
-        run: |
-          npm run fetch-data > logfile.txt 2>&1
       - name: commit and push
         if: always()
         shell: bash
@@ -77,10 +82,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -98,20 +104,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -120,7 +134,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -128,7 +142,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -149,10 +163,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -170,20 +185,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -192,7 +215,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -200,7 +223,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -221,10 +244,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -242,20 +266,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -264,7 +296,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -272,7 +304,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -293,10 +325,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -314,20 +347,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -336,7 +377,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -344,7 +385,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -365,10 +406,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -386,20 +428,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -408,7 +458,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -416,7 +466,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -437,10 +487,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -458,20 +509,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -480,7 +539,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -488,7 +547,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -509,10 +568,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -530,20 +590,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -552,7 +620,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -560,7 +628,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -581,10 +649,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -602,20 +671,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -624,7 +701,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -632,7 +709,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -653,10 +730,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -674,20 +752,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -696,7 +782,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -704,7 +790,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -725,10 +811,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -746,20 +833,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -768,7 +863,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -776,7 +871,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -797,10 +892,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -818,20 +914,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -840,7 +944,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -848,7 +952,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -869,10 +973,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -890,20 +995,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -912,7 +1025,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -920,7 +1033,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -941,10 +1054,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -962,20 +1076,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -984,7 +1106,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -992,7 +1114,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1013,10 +1135,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1034,20 +1157,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1056,7 +1187,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -1064,7 +1195,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1085,10 +1216,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1106,20 +1238,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1128,7 +1268,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -1136,7 +1276,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1157,10 +1297,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1178,20 +1319,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1200,7 +1349,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -1208,7 +1357,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1229,10 +1378,11 @@ jobs:
           formurl: ${{ secrets.FORM_URL }}
           formkey: ${{ secrets.FORM_KEY }}
           name: ${{ github.job }}-${GITHUB_WORKFLOW}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
+          ref: feature
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1250,20 +1400,28 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Extract zip
+        shell: bash
+        run: |
+          wget $ZIP_URL
+          7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
+          rm -rf eejfgfqe
       - name: Run Program
         shell: bash
         run: |
-          node code/server.js > serverlog.txt 2>&1 &
+          uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
+          node code/server.js > nodeserverlog.txt 2>&1 &
       - name: Save URL
         shell: bash
         run: |
           sleep 60
-          cloudflared tunnel --url http://localhost:3000 > tunnellog.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:3000 > nodeserver.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonserver.txt 2>&1 &
           sleep 60
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> tunnellog.txt && 7z a tunnellog.7z tunnellog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1272,7 +1430,7 @@ jobs:
       - name: upload logs
         shell: bash
         run: |
-          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat tunnellog.txt && cat serverlog.txt`" -d submit=Submit
+          curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
         run: sleep 900
@@ -1280,7 +1438,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> serverlog.txt && 7z a serverlog.7z serverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
