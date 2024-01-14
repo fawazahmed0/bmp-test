@@ -37,7 +37,7 @@ jobs:
             formkey: ${{ secrets.FORM_KEY }}
             name: ${{ github.job }}-${GITHUB_WORKFLOW}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}

@@ -24,7 +24,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -58,6 +57,11 @@ jobs:
           node code/server.js > nodeserverlog.txt 2>&1 &
           sleep 60
           npm run test > testlog.txt 2>&1
+      - name: Fetch Data
+        if: success() || failure()
+        shell: bash
+        run: |
+          npm run fetch-data > logfile.txt 2>&1
       - name: commit and push
         if: always()
         shell: bash
@@ -86,7 +90,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -172,7 +175,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -258,7 +260,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -344,7 +345,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -430,7 +430,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -516,7 +515,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -602,7 +600,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -688,7 +685,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -774,7 +770,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -860,7 +855,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -946,7 +940,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -1032,7 +1025,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -1118,7 +1110,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -1204,7 +1195,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -1290,7 +1280,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -1376,7 +1365,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
@@ -1462,7 +1450,6 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-          ref: feature
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.6
