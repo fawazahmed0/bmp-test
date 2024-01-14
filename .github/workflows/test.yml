@@ -87,6 +87,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -96,6 +100,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -168,6 +173,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -177,6 +186,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -249,6 +259,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -258,6 +272,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -330,6 +345,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -339,6 +358,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -411,6 +431,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -420,6 +444,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -492,6 +517,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -501,6 +530,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -573,6 +603,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -582,6 +616,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -654,6 +689,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -663,6 +702,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -735,6 +775,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -744,6 +788,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -816,6 +861,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -825,6 +874,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -897,6 +947,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -906,6 +960,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -978,6 +1033,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -987,6 +1046,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -1059,6 +1119,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1068,6 +1132,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -1140,6 +1205,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1149,6 +1218,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -1221,6 +1291,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1230,6 +1304,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -1302,6 +1377,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1311,6 +1390,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
@@ -1383,6 +1463,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
           ref: feature
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 21.5.0
@@ -1392,6 +1476,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 512MB RAMDisk
