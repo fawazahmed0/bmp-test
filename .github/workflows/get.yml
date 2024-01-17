@@ -52,12 +52,6 @@ jobs:
           node-version: '21.5.0'
           cache: 'npm'
 
-      - name: Runs Elasticsearch
-        uses: elastic/elastic-github-actions/elasticsearch@master
-        with:
-          stack-version: 8.9.0
-          security-enabled: false
-
       - name: Install dependencies
         shell: bash
         run: |
@@ -68,6 +62,12 @@ jobs:
 
 
       - name: Fetch Data
+        shell: bash
+        run: |
+          npm run fetch-est >> logfile.txt 2>&1
+
+      - name: Re Fetch Data
+        if: success() || failure()
         shell: bash
         run: |
           npm run fetch-est >> logfile.txt 2>&1
