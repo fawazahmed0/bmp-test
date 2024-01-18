@@ -146,7 +146,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -232,7 +232,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -318,7 +318,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -404,7 +404,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -490,7 +490,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -576,7 +576,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -662,7 +662,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -748,7 +748,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -834,7 +834,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -920,7 +920,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1006,7 +1006,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1092,7 +1092,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1178,7 +1178,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1264,7 +1264,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1350,7 +1350,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1436,7 +1436,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
@@ -1522,7 +1522,7 @@ jobs:
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat nodeserver.txt && cat nodeserverlog.txt && cat pythonserver.txt && cat pythonserverlog.txt`" -d submit=Submit
       - name: Sleep
         shell: bash
-        run: sleep 900
+        run: sleep 1200
       - name: zip the logfile
         if: always()
         shell: bash
