@@ -101,9 +101,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -187,9 +186,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -273,9 +271,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -359,9 +356,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -445,9 +441,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -531,9 +526,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -617,9 +611,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -703,9 +696,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -789,9 +781,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -875,9 +866,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -961,9 +951,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1047,9 +1036,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1133,9 +1121,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1219,9 +1206,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1305,9 +1291,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1391,9 +1376,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1477,9 +1461,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr-all libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
