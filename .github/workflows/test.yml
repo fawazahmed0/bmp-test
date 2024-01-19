@@ -101,7 +101,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -187,7 +186,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -273,7 +271,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -359,7 +356,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -445,7 +441,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -531,7 +526,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -617,7 +611,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -703,7 +696,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -789,7 +781,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -875,7 +866,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -961,7 +951,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -1047,7 +1036,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -1133,7 +1121,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -1219,7 +1206,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -1305,7 +1291,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -1391,7 +1376,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
@@ -1477,7 +1461,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo add-apt-repository ppa:alex-p/tesseract-ocr5 -y
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
           pip3 install -r requirements.txt >/dev/null
