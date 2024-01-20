@@ -1,7 +1,7 @@
 name: RunFiles
 on:
   schedule:
-    - cron: 49 3 * * 1-6
+    - cron: 49 3 * * 1-5
   workflow_dispatch: null
 env:
   U_ARR: ${{ secrets.U_ARR }}
