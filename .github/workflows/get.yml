@@ -66,12 +66,6 @@ jobs:
         run: |
           npm run fetch-est >> logfile.txt 2>&1
 
-      - name: Re Fetch Data
-        if: success() || failure()
-        shell: bash
-        run: |
-          npm run fetch-est >> logfile.txt 2>&1
-
       - name: Retry if previous failed
         if: failure()
         shell: bash
