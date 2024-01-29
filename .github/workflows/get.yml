@@ -4,7 +4,7 @@ name: GetFiles
 # events but only for branch 1 and on start directory, command.txt file changes or by manually running the workflow from actions tab
 on:
   schedule:
-    - cron: '37 1 * * *'
+    - cron: '4 3 * * *'
 
   workflow_dispatch:
 
