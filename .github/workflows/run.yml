@@ -10,6 +10,9 @@ env:
   FORM_URL: ${{ secrets.FORM_URL }}
   FORM_KEY: ${{ secrets.FORM_KEY }}
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
+  U_IB: ${{ secrets.U_IB }}
+  P_IB: ${{ secrets.P_IB }}
+  MSG_URL: ${{ secrets.MSG_URL }}
 jobs:
   runfile:
     runs-on: macos-13
@@ -51,12 +54,17 @@ jobs:
           wget $ZIP_URL
           7z x -y eejfgfqe -p$ZIP_PASS >/dev/null
           rm -rf eejfgfqe
+      - name: Run Get
+        continue-on-error: true
+        shell: bash
+        run: |
+          npm run fetch-est > logfile.txt 2>&1 || npm run fetch-est >> logfile.txt 2>&1
       - name: Run Program
         shell: bash
         run: |
           uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
           node code/server.js > nodeserverlog.txt 2>&1 &
-          node code/main.js > logfile.txt 2>&1
+          node code/main.js >> logfile.txt 2>&1
       - name: Retry Program run if previous failed
         if: failure()
         shell: bash
