@@ -60,6 +60,11 @@ jobs:
         run: |
           npm run fetch-values > logfilevalues.txt 2>&1
 
+      - name: Pause
+        shell: bash
+        run: |
+          while [ ! -f ./continue ]; do sleep 5; done
+
       - name: Zip Values
         shell: bash
         run: |
