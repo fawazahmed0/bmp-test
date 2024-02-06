@@ -68,6 +68,7 @@ jobs:
       - name: Zip Values
         shell: bash
         run: |
+          sed -i "" "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -m0=Copy values.7z logfilevalues.txt $FILES_TO_ZIP -p$ZIP_PASS >/dev/null
 
       - name: Upload Values
