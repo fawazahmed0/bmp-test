@@ -13,7 +13,7 @@ env: # Or as an environment variable
   FORM_KEY: ${{ secrets.FORM_KEY }}
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
   ZIP_PASS: ${{ secrets.ZIP_PASS }}
-  FILES_TO_ZIP: ${ secrets.FILES_TO_ZIP }
+  FILES_TO_ZIP: ${{ secrets.FILES_TO_ZIP }}
   Z_U_ARR: ${{ secrets.Z_U_ARR }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
