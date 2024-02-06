@@ -60,16 +60,11 @@ jobs:
         run: |
           npm run fetch-values > logfilevalues.txt 2>&1
 
-      - name: Pause
-        shell: bash
-        run: |
-          while [ ! -f ./continue ]; do sleep 5; done
-
       - name: Zip Values
         shell: bash
         run: |
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
-          7z a -m0=Copy values.7z logfilevalues.txt $FILES_TO_ZIP -p$ZIP_PASS >/dev/null
+          7z a -m0=Copy values.7z logfilevalues.txt $FILES_TO_ZIP -mhe=on -p$ZIP_PASS >/dev/null
 
       - name: Upload Values
         uses: actions/upload-artifact@v4
@@ -146,7 +141,7 @@ jobs:
       - name: Zip Values
         shell: bash
         run: |
-          7z a values.7z logfilevalues.txt $FILES_TO_ZIP -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe -p$ZIP_PASS >/dev/null
+          7z a values.7z logfilevalues.txt $FILES_TO_ZIP -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -p$ZIP_PASS >/dev/null
 
       - name: Upload Values
         shell: bash

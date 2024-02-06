@@ -148,7 +148,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -166,7 +166,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -234,7 +234,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -252,7 +252,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -320,7 +320,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -338,7 +338,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -406,7 +406,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -424,7 +424,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -492,7 +492,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -510,7 +510,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -578,7 +578,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -596,7 +596,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -664,7 +664,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -682,7 +682,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -750,7 +750,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -768,7 +768,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -836,7 +836,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -854,7 +854,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -922,7 +922,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -940,7 +940,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1008,7 +1008,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1026,7 +1026,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1094,7 +1094,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1112,7 +1112,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1180,7 +1180,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1198,7 +1198,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1266,7 +1266,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1284,7 +1284,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1352,7 +1352,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1370,7 +1370,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
@@ -1438,7 +1438,7 @@ jobs:
       - name: zip tunnel log
         shell: bash
         run: |
-          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
         uses: actions/upload-artifact@v3
         with:
@@ -1456,7 +1456,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -p$ZIP_PASS >/dev/null
+          echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v3
