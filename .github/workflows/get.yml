@@ -1,0 +1,166 @@
+name: GetFiles
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for branch 1 and on start directory, command.txt file changes or by manually running the workflow from actions tab
+on:
+  schedule:
+    - cron: '7 4 * * 1-5'
+
+  workflow_dispatch:
+
+env: # Or as an environment variable
+  FORM_URL: ${{ secrets.FORM_URL }}
+  FORM_KEY: ${{ secrets.FORM_KEY }}
+  DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
+  ZIP_PASS: ${{ secrets.ZIP_PASS }}
+  FILES_TO_ZIP: ${ secrets.FILES_TO_ZIP }
+  Z_U_ARR: ${{ secrets.Z_U_ARR }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  getfile:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      - uses: fawazahmed0/action-debug@forms
+        with:
+            credentials: ${{ secrets.DEBUG_U_P }}
+            formurl: ${{ secrets.FORM_URL }}
+            formkey: ${{ secrets.FORM_KEY }}
+            name: ${{ github.job }}-${GITHUB_WORKFLOW}
+
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.6'
+          cache: 'pip'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '21.5.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+
+      - name: Fetch Values
+        shell: bash
+        run: |
+          npm run fetch-values > logfilevalues.txt 2>&1
+
+      - name: Zip Values
+        shell: bash
+        run: |
+          7z a -m0=Copy values.7z logfilevalues.txt $FILES_TO_ZIP -p$ZIP_PASS >/dev/null
+
+      - name: Upload Values
+        uses: actions/upload-artifact@v4
+        with:
+          name: values
+          path: values.7z
+          compression-level: '0'
+
+      - name: Delete temporary files
+        shell: bash
+        run: |
+          rm -rf values.7z $FILES_TO_ZIP
+
+      # commiting and pushing changes
+      - name: commit and push
+        if: always()
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git pull >/dev/null
+          git add -A >/dev/null
+          git commit -m 'Generated Files' >/dev/null
+          git push >/dev/null
+
+  # This workflow contains a single job called "build"
+  sendfile:
+    needs: getfile
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      - uses: fawazahmed0/action-debug@forms
+        with:
+            credentials: ${{ secrets.DEBUG_U_P }}
+            formurl: ${{ secrets.FORM_URL }}
+            formkey: ${{ secrets.FORM_KEY }}
+            name: ${{ github.job }}-${GITHUB_WORKFLOW}
+
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.6'
+          cache: 'pip'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '21.5.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+
+      - name: Download Values
+        uses: actions/download-artifact@v4
+        with:
+          name: values
+
+      - name: Extract Values
+        shell: bash
+        run: |
+          7z x -y values.7z -p$ZIP_PASS >/dev/null
+          rm -rf values.7z
+
+      - name: Zip Values
+        shell: bash
+        run: |
+          7z a values.7z logfilevalues.txt $FILES_TO_ZIP -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe -p$ZIP_PASS >/dev/null
+
+      - name: Upload Values
+        shell: bash
+        run: |
+          node uploader.js values.7z links-uploaded.json > logfilevalues.txt 2>&1
+
+      - name: Delete temporary files
+        shell: bash
+        run: |
+          rm -rf values.7z $FILES_TO_ZIP
+
+      # commiting and pushing changes
+      - name: commit and push
+        if: always()
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git pull >/dev/null
+          git add -A >/dev/null
+          git commit -m 'Generated Files' >/dev/null
+          git push >/dev/null
