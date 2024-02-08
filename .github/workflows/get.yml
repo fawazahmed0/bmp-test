@@ -49,9 +49,6 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11.6'
 
       - uses: actions/setup-node@v4
         with:
@@ -61,7 +58,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
 
@@ -112,6 +108,7 @@ jobs:
         uses: fawazahmed0/maximize-build-space@master
         with:
           swap-size-mb: 1024
+          root-reserve-mb: 15360
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
@@ -130,11 +127,6 @@ jobs:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11.6'
-          cache: 'pip'
-
       - uses: actions/setup-node@v4
         with:
           node-version: '21.5.0'
@@ -143,7 +135,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
 
