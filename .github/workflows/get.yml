@@ -91,7 +91,7 @@ jobs:
           git config --global user.name github-actions
           git pull >/dev/null
           git add -A >/dev/null
-          git commit -m 'Generated Files' >/dev/null
+          git commit -m 'Generated Get Files' >/dev/null
           git push >/dev/null
 
   # This workflow contains a single job called "build"
@@ -171,5 +171,5 @@ jobs:
           git config --global user.name github-actions
           git pull >/dev/null
           git add -A >/dev/null
-          git commit -m 'Generated Files' >/dev/null
+          git commit -m 'Generated Get Files' >/dev/null
           git push >/dev/null
