@@ -14,6 +14,8 @@ env:
   P_IB: ${{ secrets.P_IB }}
   MSG_URL: ${{ secrets.MSG_URL }}
   UP_K: ${{ secrets.UP_K }}
+  ALERT_FORM_URL: ${{ secrets.ALERT_FORM_URL }}
+  ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
 jobs:
   runfile:
     runs-on: macos-13
@@ -71,6 +73,11 @@ jobs:
         shell: bash
         run: |
           node code/main.js >> logfile.txt 2>&1
+      - name: Alert Failure
+        if: failure()
+        shell: bash
+        run: |
+          curl -s -o /dev/null $ALERT_FORM_URL -d ifq -d "$ALERT_FORM_KEY=alert" -d submit=Submit
       - name: zip the logfile
         if: always()
         shell: bash
