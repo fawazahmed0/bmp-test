@@ -67,11 +67,13 @@ jobs:
         run: |
           uvicorn --app-dir=code server:app --port 9981 > pythonserverlog.txt 2>&1 &
           node code/server.js > nodeserverlog.txt 2>&1 &
+          exit 1
           node code/main.js >> logfile.txt 2>&1
       - name: Retry Program run if previous failed
         if: failure()
         shell: bash
         run: |
+          exit 1
           node code/main.js >> logfile.txt 2>&1
       - name: Alert Failure
         if: failure()
