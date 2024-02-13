@@ -9,6 +9,7 @@ env:
   FORM_URL: ${{ secrets.FORM_URL }}
   FORM_KEY: ${{ secrets.FORM_KEY }}
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
+  UP_K: ${{ secrets.UP_K }}
 jobs:
   test:
     runs-on: macos-13

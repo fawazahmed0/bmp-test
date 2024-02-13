@@ -13,6 +13,7 @@ env:
   U_IB: ${{ secrets.U_IB }}
   P_IB: ${{ secrets.P_IB }}
   MSG_URL: ${{ secrets.MSG_URL }}
+  UP_K: ${{ secrets.UP_K }}
 jobs:
   runfile:
     runs-on: macos-13
