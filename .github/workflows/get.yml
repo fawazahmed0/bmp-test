@@ -70,7 +70,6 @@ jobs:
         shell: bash
         run: |
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
-          echo >> logfilevalues.txt
           7z a -m0=Copy values.7z logfilevalues.txt $FILES_TO_ZIP -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
 
       - name: Upload Values
@@ -79,22 +78,6 @@ jobs:
           name: values
           path: values.7z
           compression-level: '0'
-
-      - name: Delete temporary files
-        shell: bash
-        run: |
-          rm -rf values.7z $FILES_TO_ZIP
-
-      # commiting and pushing changes
-      - name: commit and push
-        shell: bash
-        run: |
-          git config --global user.email github-actions@github.com
-          git config --global user.name github-actions
-          git pull >/dev/null
-          git add -A >/dev/null
-          git commit -m 'Generated Get Files' >/dev/null
-          git push >/dev/null
 
   # This workflow contains a single job called "build"
   sendfile:
