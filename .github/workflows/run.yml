@@ -158,10 +158,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -177,10 +178,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve1:
     runs-on: ubuntu-latest
     steps:
@@ -244,10 +246,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -263,10 +266,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve2:
     runs-on: ubuntu-latest
     steps:
@@ -330,10 +334,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -349,10 +354,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve3:
     runs-on: ubuntu-latest
     steps:
@@ -416,10 +422,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -435,10 +442,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve4:
     runs-on: ubuntu-latest
     steps:
@@ -502,10 +510,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -521,10 +530,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve5:
     runs-on: ubuntu-latest
     steps:
@@ -588,10 +598,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -607,10 +618,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve6:
     runs-on: ubuntu-latest
     steps:
@@ -674,10 +686,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -693,10 +706,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve7:
     runs-on: ubuntu-latest
     steps:
@@ -760,10 +774,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -779,10 +794,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve8:
     runs-on: ubuntu-latest
     steps:
@@ -846,10 +862,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -865,10 +882,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve9:
     runs-on: ubuntu-latest
     steps:
@@ -932,10 +950,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -951,10 +970,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve10:
     runs-on: ubuntu-latest
     steps:
@@ -1018,10 +1038,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -1037,10 +1058,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve11:
     runs-on: ubuntu-latest
     steps:
@@ -1104,10 +1126,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -1123,10 +1146,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve12:
     runs-on: ubuntu-latest
     steps:
@@ -1190,10 +1214,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -1209,10 +1234,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve13:
     runs-on: ubuntu-latest
     steps:
@@ -1276,10 +1302,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -1295,10 +1322,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve14:
     runs-on: ubuntu-latest
     steps:
@@ -1362,10 +1390,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -1381,10 +1410,11 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
   serve15:
     runs-on: ubuntu-latest
     steps:
@@ -1448,10 +1478,11 @@ jobs:
         run: |
           echo >> nodeserver.txt && echo >> pythonserver.txt && 7z a tunnellog.7z nodeserver.txt pythonserver.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload tunnel log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-tunnel-log
           path: tunnellog.7z
+          retention-days: 1
       - name: upload logs
         shell: bash
         run: |
@@ -1467,7 +1498,8 @@ jobs:
           echo >> nodeserverlog.txt && echo >> pythonserverlog.txt && 7z a serverlog.7z nodeserverlog.txt pythonserverlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - name: Upload log
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: serverlog.7z
+          retention-days: 1
