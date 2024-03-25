@@ -25,7 +25,7 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.11.6
+          python-version: 3.12.0
           cache: pip
       - uses: actions/setup-node@v4
         with:
@@ -33,9 +33,8 @@ jobs:
           cache: npm
       - name: Install dependencies
         shell: bash
-        run: |
-          wget https://raw.githubusercontent.com/Homebrew/homebrew-core/0c422e6bfa1aa38d9baeef8a365b38861eb4dced/Formula/p/postgresql%4014.rb
-          brew install ./postgresql\@14.rb
+        run: |     
+          brew install postgresql
           pip3 install -r requirements.txt >/dev/null
           brew install poppler tesseract tesseract-lang
           npm ci >/dev/null
