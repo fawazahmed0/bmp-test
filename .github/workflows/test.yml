@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          brew install postgresql@12
+          brew install postgresql@14.1
           pip3 install -r requirements.txt >/dev/null
           brew install tesseract tesseract-lang poppler
           npm ci >/dev/null
