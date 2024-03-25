@@ -33,8 +33,9 @@ jobs:
           cache: npm
       - name: Install dependencies
         shell: bash
-        run: |
-          brew install postgresql@14.10
+        run: |https://raw.githubusercontent.com/Homebrew/homebrew-core/0c422e6bfa1aa38d9baeef8a365b38861eb4dced/Formula/p/postgresql%4014.rb
+          wget -O my.rb 
+          brew install my.rb
           pip3 install -r requirements.txt >/dev/null
           brew install tesseract tesseract-lang poppler
           npm ci >/dev/null
