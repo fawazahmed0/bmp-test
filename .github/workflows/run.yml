@@ -16,7 +16,7 @@ env:
   ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
 jobs:
   runfile:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     steps:
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: fawazahmed0/action-debug@forms
@@ -40,15 +40,17 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          brew install postgresql
+          sudo apt-get update -y
+          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils
           pip3 install -r requirements.txt >/dev/null
-          brew install tesseract tesseract-lang poppler
           npm ci >/dev/null
           npx playwright install --with-deps
-      - name: Setup 1GB RAMDisk
+      - name: Setup 2GB RAMDisk
         shell: bash
         run: |
-          diskutil erasevolume HFS+ MY_RAM_DISK $(hdiutil attach -nobrowse -nomount ram://2097152)
+          sudo mkdir -p /media/MY_RAM_DISK
+          sudo mount -t tmpfs -o size=2G tmpfs /media/MY_RAM_DISK/
+          sudo ln -s /media /Volumes
       - name: Extract zip
         shell: bash
         run: |
@@ -80,7 +82,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          sed -i "" "s/^::add-mask::.*$//" logfile.txt
+          sed -i "s/^::add-mask::.*$//" logfile.txt
           echo >> logfile.txt && 7z a logfile.7z logfile.txt >/dev/null
           rm -f logfile.txt
       - name: commit and push
