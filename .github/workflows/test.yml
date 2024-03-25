@@ -37,7 +37,7 @@ jobs:
           wget https://raw.githubusercontent.com/Homebrew/homebrew-core/0c422e6bfa1aa38d9baeef8a365b38861eb4dced/Formula/p/postgresql%4014.rb
           brew install ./postgresql\@14.rb
           pip3 install -r requirements.txt >/dev/null
-          brew install tesseract tesseract-lang poppler
+          brew install poppler tesseract tesseract-lang
           npm ci >/dev/null
           npx playwright install --with-deps
       - name: Setup 1GB RAMDisk
