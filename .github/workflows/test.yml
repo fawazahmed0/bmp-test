@@ -110,7 +110,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -120,6 +123,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -197,7 +204,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -207,6 +217,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -284,7 +298,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -294,6 +311,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -371,7 +392,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -381,6 +405,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -458,7 +486,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -468,6 +499,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -545,7 +580,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -555,6 +593,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -632,7 +674,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -642,6 +687,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -719,7 +768,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -729,6 +781,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -806,7 +862,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -816,6 +875,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -893,7 +956,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -903,6 +969,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -980,7 +1050,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -990,6 +1063,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -1067,7 +1144,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1077,6 +1157,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -1154,7 +1238,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1164,6 +1251,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -1241,7 +1332,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1251,6 +1345,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -1328,7 +1426,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1338,6 +1439,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
@@ -1415,7 +1520,10 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y tesseract-ocr libtesseract-dev poppler-utils cloudflared
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240311
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/experimental -y
           pip3 install -r requirements.txt >/dev/null
           npm ci >/dev/null
           npx playwright install --with-deps
@@ -1425,6 +1533,10 @@ jobs:
           sudo mkdir -p /media/MY_RAM_DISK
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
+      - name: Symlink docker binaries
+        shell: bash
+        run: |
+          node symlink-binaries.js
       - name: Extract zip
         shell: bash
         run: |
