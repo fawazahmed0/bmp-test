@@ -1,6 +1,5 @@
 name: RunFiles
 on:
-
   workflow_dispatch: null
 env:
   U_ARR: ${{ secrets.U_ARR }}
