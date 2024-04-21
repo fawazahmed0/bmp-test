@@ -5,8 +5,10 @@ on:
   workflow_dispatch: null
 env:
   U_ARR: ${{ secrets.U_ARR }}
+  Z_U_ARR: ${{ secrets.Z_U_ARR }}
   ZIP_URL: ${{ secrets.ZIP_URL }}
   ZIP_PASS: ${{ secrets.ZIP_PASS }}
+  ZIP_FILES: ${{ secrets.ZIP_FILES }}
   FORM_URL: ${{ secrets.FORM_URL }}
   FORM_KEY: ${{ secrets.FORM_KEY }}
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
@@ -106,6 +108,15 @@ jobs:
   build1:
     runs-on: ubuntu-latest
     steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          root-reserve-mb: 15360
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
       - name: setup env
         shell: bash
         run: |
@@ -176,10 +187,26 @@ jobs:
         shell: bash
         run: |
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat noderun.txt && cat noderunlog.txt && cat pythonrun.txt && cat pythonrunlog.txt`" -d submit=Submit
+      - name: Get needed data for build and test
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          npm run fetch-values > logfilevalues.txt 2>&1 &
       - name: build and test
         shell: bash
         run: |
           node build-test.mjs $((21500 - `date +%s` + ${{ env.actionstarttime }}))
+      - name: zip the log
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          sed -i "s/^::add-mask::.*$//" logfilevalues.txt
+          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - name: push the log
+        if: ${{ endsWith(github.job, 'build-generate') }}
+        shell: bash
+        run: |
+          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
       - name: zip the log
         shell: bash
         if: always()
@@ -191,9 +218,28 @@ jobs:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 1
-  build2:
+      - name: commit and push
+        if: ${{ contains(github.job, 'build-generate') }}
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git pull >/dev/null
+          git add logfilevalues.txt links-uploaded.json >/dev/null
+          git commit -m 'Generated Get Files' >/dev/null
+          git push >/dev/null
+  build-generate:
     runs-on: ubuntu-latest
     steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          root-reserve-mb: 15360
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
       - name: setup env
         shell: bash
         run: |
@@ -264,10 +310,26 @@ jobs:
         shell: bash
         run: |
           curl -s -o /dev/null $FORM_URL -d ifq -d "$FORM_KEY=`cat noderun.txt && cat noderunlog.txt && cat pythonrun.txt && cat pythonrunlog.txt`" -d submit=Submit
+      - name: Get needed data for build and test
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          npm run fetch-values > logfilevalues.txt 2>&1 &
       - name: build and test
         shell: bash
         run: |
-          node build-test.mjs $((21500 - `date +%s` + ${{ env.actionstarttime }}))
+          node build-test.mjs $((20600 - `date +%s` + ${{ env.actionstarttime }}))
+      - name: zip the log
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          sed -i "s/^::add-mask::.*$//" logfilevalues.txt
+          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - name: push the log
+        if: ${{ endsWith(github.job, 'build-generate') }}
+        shell: bash
+        run: |
+          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
       - name: zip the log
         shell: bash
         if: always()
@@ -279,3 +341,13 @@ jobs:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 1
+      - name: commit and push
+        if: ${{ contains(github.job, 'build-generate') }}
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git pull >/dev/null
+          git add logfilevalues.txt links-uploaded.json >/dev/null
+          git commit -m 'Generated Get Files' >/dev/null
+          git push >/dev/null
