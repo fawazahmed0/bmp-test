@@ -170,12 +170,14 @@ jobs:
         shell: bash
         run: |
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
-          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
-      - name: push the log
-        if: ${{ endsWith(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+          7z a -m0=Copy values.7z logfilevalues.txt $ZIP_FILES -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v4
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
       - name: zip the log
         shell: bash
         if: always()
@@ -187,16 +189,6 @@ jobs:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 1
-      - name: commit and push
-        if: ${{ contains(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          git config --global user.email github-actions@github.com
-          git config --global user.name github-actions
-          git pull >/dev/null
-          git add logfilevalues.txt links-uploaded.json >/dev/null
-          git commit -m 'Generated Get Files' >/dev/null
-          git push >/dev/null
   test-generate:
     runs-on: ubuntu-latest
     steps:
@@ -292,12 +284,14 @@ jobs:
         shell: bash
         run: |
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
-          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
-      - name: push the log
-        if: ${{ endsWith(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+          7z a -m0=Copy values.7z logfilevalues.txt $ZIP_FILES -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v4
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
       - name: zip the log
         shell: bash
         if: always()
@@ -309,13 +303,3 @@ jobs:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 1
-      - name: commit and push
-        if: ${{ contains(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          git config --global user.email github-actions@github.com
-          git config --global user.name github-actions
-          git pull >/dev/null
-          git add logfilevalues.txt links-uploaded.json >/dev/null
-          git commit -m 'Generated Get Files' >/dev/null
-          git push >/dev/null

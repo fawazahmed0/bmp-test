@@ -195,18 +195,20 @@ jobs:
       - name: build and test
         shell: bash
         run: |
-          node build-test.mjs $((21500 - `date +%s` + ${{ env.actionstarttime }}))
+          node build-test.mjs $((21450 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the log
         if: ${{ endsWith(github.job, '-generate') }}
         shell: bash
         run: |
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
-          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
-      - name: push the log
-        if: ${{ endsWith(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+          7z a -m0=Copy values.7z logfilevalues.txt $ZIP_FILES -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v4
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
       - name: zip the log
         shell: bash
         if: always()
@@ -218,16 +220,6 @@ jobs:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 1
-      - name: commit and push
-        if: ${{ contains(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          git config --global user.email github-actions@github.com
-          git config --global user.name github-actions
-          git pull >/dev/null
-          git add logfilevalues.txt links-uploaded.json >/dev/null
-          git commit -m 'Generated Get Files' >/dev/null
-          git push >/dev/null
   build-generate:
     runs-on: ubuntu-latest
     steps:
@@ -318,18 +310,20 @@ jobs:
       - name: build and test
         shell: bash
         run: |
-          node build-test.mjs $((20600 - `date +%s` + ${{ env.actionstarttime }}))
+          node build-test.mjs $((21450 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the log
         if: ${{ endsWith(github.job, '-generate') }}
         shell: bash
         run: |
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
-          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
-      - name: push the log
-        if: ${{ endsWith(github.job, 'build-generate') }}
-        shell: bash
-        run: |
-          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+          7z a -m0=Copy values.7z logfilevalues.txt $ZIP_FILES -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v4
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
       - name: zip the log
         shell: bash
         if: always()
@@ -341,13 +335,48 @@ jobs:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 1
+  generate:
+    needs: build-generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        with:
+          root-reserve-mb: 15360
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.7.2
+          cache: npm
+      - name: Install dependencies
+        shell: bash
+        run: |
+          npm ci >/dev/null
+          npx playwright install --with-deps
+      - uses: actions/download-artifact@v4
+        with:
+          name: values
+      - name: zip the log
+        shell: bash
+        run: |
+          7z x -y values.7z -p$ZIP_PASS >/dev/null
+          rm -rf values.7z
+          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+          rm -rf values.7z $ZIP_FILES
       - name: commit and push
-        if: ${{ contains(github.job, 'build-generate') }}
         shell: bash
         run: |
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
           git pull >/dev/null
-          git add logfilevalues.txt links-uploaded.json >/dev/null
+          git add -A >/dev/null
           git commit -m 'Generated Get Files' >/dev/null
           git push >/dev/null
