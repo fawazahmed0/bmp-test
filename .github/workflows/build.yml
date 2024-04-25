@@ -195,7 +195,7 @@ jobs:
       - name: build and test
         shell: bash
         run: |
-          node build-test.mjs $((21450 - `date +%s` + ${{ env.actionstarttime }}))
+          node build-test.mjs $((21400 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the log
         if: ${{ endsWith(github.job, '-generate') }}
         shell: bash
@@ -310,7 +310,7 @@ jobs:
       - name: build and test
         shell: bash
         run: |
-          node build-test.mjs $((21450 - `date +%s` + ${{ env.actionstarttime }}))
+          node build-test.mjs $((21400 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the log
         if: ${{ endsWith(github.job, '-generate') }}
         shell: bash
