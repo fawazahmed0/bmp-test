@@ -148,7 +148,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v3-node20
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -184,7 +184,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v3-node20
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
@@ -262,7 +262,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v3-node20
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -298,7 +298,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v3-node20
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
@@ -376,7 +376,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v3-node20
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -412,7 +412,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v3-node20
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
