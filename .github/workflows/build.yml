@@ -1,7 +1,7 @@
 name: Build
 on:
-  schedule:
-    - cron: 49 3 * * 1-5
+ # schedule:
+ #   - cron: 49 3 * * 1-5
   workflow_dispatch: null
 env:
   U_ARR: ${{ secrets.U_ARR }}
