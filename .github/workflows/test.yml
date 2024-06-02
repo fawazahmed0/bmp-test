@@ -1,7 +1,5 @@
 name: Test
 on:
-  schedule:
-    - cron: 49 13 * * *
   workflow_dispatch: null
 env:
   ZIP_URL: ${{ secrets.ZIP_URL }}
