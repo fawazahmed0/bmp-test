@@ -15,7 +15,6 @@ env:
   U_IB: ${{ secrets.U_IB }}
   P_IB: ${{ secrets.P_IB }}
   MSG_URL: ${{ secrets.MSG_URL }}
-  UP_K: ${{ secrets.UP_K }}
   ALERT_FORM_URL: ${{ secrets.ALERT_FORM_URL }}
   ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
 jobs:
