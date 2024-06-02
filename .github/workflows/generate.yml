@@ -19,7 +19,7 @@ env:
   ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
 jobs:
   build-generate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -135,7 +135,7 @@ jobs:
           retention-days: 1
   generate:
     needs: build-generate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         with:
