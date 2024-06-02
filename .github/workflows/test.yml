@@ -33,6 +33,7 @@ jobs:
           sudo mount -t tmpfs -o size=2G tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
+        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
@@ -108,6 +109,7 @@ jobs:
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
+        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
@@ -218,6 +220,7 @@ jobs:
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
+        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
@@ -328,6 +331,7 @@ jobs:
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
+        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
