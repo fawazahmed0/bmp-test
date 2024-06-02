@@ -11,7 +11,7 @@ env:
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: actions/checkout@v4
@@ -33,7 +33,6 @@ jobs:
           sudo mount -t tmpfs -o size=2G tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
-        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
@@ -74,7 +73,7 @@ jobs:
           git commit -m 'Generated Test And Other Files' >/dev/null
           git push >/dev/null
   test1:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -109,7 +108,6 @@ jobs:
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
-        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
@@ -185,7 +183,7 @@ jobs:
           path: runlog.7z
           retention-days: 1
   test2:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -220,7 +218,6 @@ jobs:
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
-        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
@@ -296,7 +293,7 @@ jobs:
           path: runlog.7z
           retention-days: 1
   test-generate:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -331,7 +328,6 @@ jobs:
           sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
           sudo ln -s /media /Volumes
       - name: Install dependencies
-        continue-on-error: true
         shell: bash
         run: |
           sudo apt-get update -y
