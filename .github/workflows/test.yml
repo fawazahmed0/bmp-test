@@ -11,7 +11,7 @@ env:
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
           git commit -m 'Generated Test And Other Files' >/dev/null
           git push >/dev/null
   test1:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -183,7 +183,7 @@ jobs:
           path: runlog.7z
           retention-days: 1
   test2:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -293,7 +293,7 @@ jobs:
           path: runlog.7z
           retention-days: 1
   test-generate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}

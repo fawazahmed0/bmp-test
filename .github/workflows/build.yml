@@ -17,7 +17,7 @@ env:
   ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: actions/checkout@v4
@@ -105,7 +105,7 @@ jobs:
           git commit -m 'Generated Files' >/dev/null
           git push >/dev/null
   build1:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -216,7 +216,7 @@ jobs:
           path: runlog.7z
           retention-days: 1
   build2:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -327,7 +327,7 @@ jobs:
           path: runlog.7z
           retention-days: 1
   build-generate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -439,7 +439,7 @@ jobs:
           retention-days: 1
   generate:
     needs: build-generate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         with:
