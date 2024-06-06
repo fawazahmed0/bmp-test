@@ -471,7 +471,13 @@ jobs:
           7z x -y values.7z -p$ZIP_PASS >/dev/null
           rm -rf values.7z
           7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - name: wait for log data
+        shell: bash
+        run: |
           node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+      - name: cleanup temporary files for commit
+        shell: bash
+        run: |
           rm -rf values.7z $ZIP_FILES
       - name: commit and push
         shell: bash
