@@ -77,7 +77,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          python code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
