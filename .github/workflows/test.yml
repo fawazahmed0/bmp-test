@@ -68,9 +68,9 @@ jobs:
         run: |
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
-          git pull -X ours >/dev/null
           git add -A >/dev/null
           git commit -m 'Generated Test And Other Files' >/dev/null
+          git pull -X ours >/dev/null
           git push >/dev/null
   test1:
     runs-on: ubuntu-24.04
