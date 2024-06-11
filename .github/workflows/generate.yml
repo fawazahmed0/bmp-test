@@ -168,10 +168,12 @@ jobs:
         run: |
           node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
       - name: cleanup temporary files for commit
+        if: always()
         shell: bash
         run: |
           rm -rf values.7z $ZIP_FILES
       - name: commit and push
+        if: always()
         shell: bash
         run: |
           git config --global user.email github-actions@github.com
