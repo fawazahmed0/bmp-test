@@ -12,6 +12,8 @@ env:
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
   U_IB: ${{ secrets.U_IB }}
   P_IB: ${{ secrets.P_IB }}
+  U_TB: ${{ secrets.U_TB }}
+  P_TB: ${{ secrets.P_TB }}
   MSG_URL: ${{ secrets.MSG_URL }}
   ALERT_FORM_URL: ${{ secrets.ALERT_FORM_URL }}
   ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
