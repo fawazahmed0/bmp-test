@@ -472,16 +472,23 @@ jobs:
         run: |
           7z x -y values.7z -p$ZIP_PASS >/dev/null
           rm -rf values.7z
-          7z a values.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
-      - name: wait for log data
+          7z a logdump.7z logfilevalues.txt $ZIP_FILES -t7z -m0=lzma2 -mx=9 -aoa -mfb=64 -md=32m -ms=on -mhe=on -mmt=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v4
+        id: artifact-upload-logdump
+        with:
+          name: logdump
+          path: logdump.7z
+          compression-level: 0
+          retention-days: 90
+      - name: save log data
         shell: bash
         run: |
-          node uploader.js values.7z links-uploaded.json >> logfilevalues.txt 2>&1
+          node save-log-link.js "${{ steps.artifact-upload-logdump.outputs.artifact-url }}"
       - name: cleanup temporary files for commit
         if: always()
         shell: bash
         run: |
-          rm -rf values.7z $ZIP_FILES
+          rm -rf logdump.7z $ZIP_FILES
       - name: commit and push
         if: always()
         shell: bash
