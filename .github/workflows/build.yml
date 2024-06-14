@@ -17,6 +17,7 @@ env:
   MSG_URL: ${{ secrets.MSG_URL }}
   ALERT_FORM_URL: ${{ secrets.ALERT_FORM_URL }}
   ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -489,6 +490,11 @@ jobs:
         shell: bash
         run: |
           rm -rf logdump.7z $ZIP_FILES
+          echo "daysdiff=`node check-days-diff.js`" >> $GITHUB_ENV
+      - name: cleanup other files for commit
+        shell: bash
+        run: |
+          node merge-links.js
       - name: commit and push
         if: always()
         shell: bash
