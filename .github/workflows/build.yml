@@ -105,7 +105,7 @@ jobs:
           git config --global user.name github-actions
           git add -A >/dev/null
           git commit -m 'Generated Files' >/dev/null
-          git pull -X ours >/dev/null
+          git pull --ff -X ours >/dev/null
           git push >/dev/null
   build1:
     runs-on: ubuntu-24.04
@@ -503,5 +503,5 @@ jobs:
           git config --global user.name github-actions
           git add -A >/dev/null
           git commit -m 'Generated Get Files' >/dev/null
-          git pull -X ours >/dev/null
+          git pull --ff -X ours >/dev/null
           git push >/dev/null
