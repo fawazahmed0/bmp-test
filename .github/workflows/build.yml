@@ -452,6 +452,7 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
+      - uses: fawazahmed0/wireit@setup-github-actions-caching
       - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
@@ -494,7 +495,7 @@ jobs:
       - name: cleanup other files for commit
         shell: bash
         run: |
-          node merge-links.js
+          node merge-links.js > mergelog.txt 2>&1
       - name: commit and push
         if: always()
         shell: bash
