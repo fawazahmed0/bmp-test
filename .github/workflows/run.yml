@@ -1,0 +1,60 @@
+name: testRun
+on:
+  workflow_dispatch: null
+env:
+  U_ARR: ${{ secrets.U_ARR }}
+  Z_U_ARR: ${{ secrets.Z_U_ARR }}
+  ZIP_URL: ${{ secrets.ZIP_URL }}
+  ZIP_PASS: ${{ secrets.ZIP_PASS }}
+  ZIP_FILES: ${{ secrets.ZIP_FILES }}
+  FORM_URL: ${{ secrets.FORM_URL }}
+  FORM_KEY: ${{ secrets.FORM_KEY }}
+  DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
+  U_IB: ${{ secrets.U_IB }}
+  P_IB: ${{ secrets.P_IB }}
+  U_TB: ${{ secrets.U_TB }}
+  P_TB: ${{ secrets.P_TB }}
+  MSG_URL: ${{ secrets.MSG_URL }}
+  ALERT_FORM_URL: ${{ secrets.ALERT_FORM_URL }}
+  ALERT_FORM_KEY: ${{ secrets.ALERT_FORM_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  test-files:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        with:
+          root-reserve-mb: 15360
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      - uses: fawazahmed0/wireit@setup-github-actions-caching
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.2.0
+          cache: npm
+      - name: Install dependencies
+        shell: bash
+        run: |
+          npm ci >/dev/null
+          npx playwright install --with-deps
+      - name: cleanup other files for commit
+        shell: bash
+        run: |
+          node merge-links.js
+      - name: commit and push
+        if: always()
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git add -A >/dev/null
+          git commit -m 'Generated run Files' >/dev/null
+          git pull --ff -X ours >/dev/null
+          git push >/dev/null
