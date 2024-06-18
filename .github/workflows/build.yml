@@ -493,6 +493,7 @@ jobs:
           rm -rf logdump.7z $ZIP_FILES
           echo "daysdiff=`node check-days-diff.js`" >> $GITHUB_ENV
       - name: cleanup other files for commit
+        if: ${{ env.daysdiff=='true' }}
         shell: bash
         run: |
           node merge-links.js > mergelog.txt 2>&1
