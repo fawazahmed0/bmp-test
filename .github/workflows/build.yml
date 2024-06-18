@@ -29,11 +29,11 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12.3
+          python-version: 3.12.4
           cache: pip
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.2.0
+          node-version: 22.3.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -130,11 +130,11 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12.3
+          python-version: 3.12.4
           cache: pip
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.2.0
+          node-version: 22.3.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -241,11 +241,11 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12.3
+          python-version: 3.12.4
           cache: pip
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.2.0
+          node-version: 22.3.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -352,11 +352,11 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12.3
+          python-version: 3.12.4
           cache: pip
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.2.0
+          node-version: 22.3.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -459,7 +459,7 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.2.0
+          node-version: 22.3.0
           cache: npm
       - name: Install dependencies
         shell: bash
