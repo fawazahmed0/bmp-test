@@ -1,8 +1,7 @@
 name: Generate
 on:
   workflow_dispatch: null
-  schedule:
-    - cron: 49 3 * * 1-5
+
 env:
   U_ARR: ${{ secrets.U_ARR }}
   Z_U_ARR: ${{ secrets.Z_U_ARR }}
