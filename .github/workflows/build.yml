@@ -1,8 +1,8 @@
 name: Build
 on:
-  workflow_dispatch: null
   schedule:
-    - cron: "49 3 * * 1-5"
+    - cron: 49 3 * * 1-5
+  workflow_dispatch: null
 env:
   U_ARR: ${{ secrets.U_ARR }}
   Z_U_ARR: ${{ secrets.Z_U_ARR }}
@@ -32,11 +32,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12.4
-          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 22.3.0
-          cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
         run: |
@@ -133,11 +131,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12.4
-          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 22.3.0
-          cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
         run: |
@@ -244,11 +240,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12.4
-          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 22.3.0
-          cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
         run: |
@@ -355,11 +349,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12.4
-          cache: pip
       - uses: actions/setup-node@v4
         with:
           node-version: 22.3.0
-          cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
         run: |
@@ -462,7 +454,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.3.0
-          cache: npm
       - name: Install dependencies
         shell: bash
         run: |
