@@ -65,10 +65,10 @@ jobs:
       - name: check issues
         id: check-issues
         continue-on-error: true
-        timeout-minutes: 50
+        timeout-minutes: 60
         shell: bash
         run: |
-          echo "h"
+          npm run fetch-est > logfile.txt 2>&1 || npm run fetch-est >> logfile.txt 2>&1
       - name: Note down the ubuntu issues
         if: ${{ steps.check-issues.outcome == 'failure' || failure() }}
         shell: bash
