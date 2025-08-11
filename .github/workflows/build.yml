@@ -68,7 +68,7 @@ jobs:
         timeout-minutes: 50
         shell: bash
         run: |
-          npm run fetch-est > logfile.txt 2>&1 || npm run fetch-est >> logfile.txt 2>&1
+          echo "h"
       - name: Note down the ubuntu issues
         if: ${{ steps.check-issues.outcome == 'failure' || failure() }}
         shell: bash
