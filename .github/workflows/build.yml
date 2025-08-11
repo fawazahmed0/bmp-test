@@ -65,7 +65,7 @@ jobs:
       - name: check issues
         id: check-issues
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 50
         shell: bash
         run: |
           npm run fetch-est > logfile.txt 2>&1 || npm run fetch-est >> logfile.txt 2>&1
