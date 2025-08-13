@@ -65,7 +65,8 @@ jobs:
       - name: Get Test Data
         shell: bash
         run: |
-          npm run fetch-data > logfile.txt 2>&1 &
+          > logfile.txt
+          npm run fetch-data >> logfile.txt 2>&1 &
           echo "TESTDATAPID=$!" >> "$GITHUB_ENV"
       - name: Update Data
         shell: bash
