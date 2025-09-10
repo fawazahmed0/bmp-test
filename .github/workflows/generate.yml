@@ -107,7 +107,7 @@ jobs:
       - name: build and test
         shell: bash
         run: |
-          node build-test.mjs $((21000 - `date +%s` + ${{ env.actionstarttime }}))
+          node build-test.mjs $((20580 - `date +%s` + ${{ env.actionstarttime }}))
       - name: zip the log
         if: ${{ endsWith(github.job, '-generate') }}
         shell: bash
