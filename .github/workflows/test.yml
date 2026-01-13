@@ -12,6 +12,8 @@ env:
   FORM_KEY: ${{ secrets.FORM_KEY }}
   DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  U_GM: ${{ secrets.U_GM }}
+  P_GM: ${{ secrets.P_GM }}
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -26,17 +28,17 @@ jobs:
           remove-codeql: 'true'
           remove-docker-images: 'true'
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.5
+          python-version: 3.14.2
           cache: pip
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 24.9.0
+          node-version: 25.2.1
           cache: npm
       - name: Setup for testing ubuntu binaries
         shell: bash
@@ -118,17 +120,17 @@ jobs:
         run: |
           echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.5
+          python-version: 3.14.2
           cache: pip
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 24.9.0
+          node-version: 25.2.1
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -170,7 +172,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -194,7 +196,7 @@ jobs:
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
           rm -rf $ZIP_FILES
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: ${{ endsWith(github.job, '-generate') }}
         with:
           name: values
@@ -212,7 +214,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
@@ -235,17 +237,17 @@ jobs:
         run: |
           echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.5
+          python-version: 3.14.2
           cache: pip
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 24.9.0
+          node-version: 25.2.1
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -287,7 +289,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -311,7 +313,7 @@ jobs:
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
           rm -rf $ZIP_FILES
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: ${{ endsWith(github.job, '-generate') }}
         with:
           name: values
@@ -329,7 +331,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
@@ -352,17 +354,17 @@ jobs:
         run: |
           echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.5
+          python-version: 3.14.2
           cache: pip
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 24.9.0
+          node-version: 25.2.1
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -404,7 +406,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -428,7 +430,7 @@ jobs:
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
           rm -rf $ZIP_FILES
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: ${{ endsWith(github.job, '-generate') }}
         with:
           name: values
@@ -446,7 +448,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
