@@ -30,7 +30,7 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.14.2
+          python-version: 3.13.11
           cache: pip
       - uses: actions/setup-node@v6
         with:
@@ -135,7 +135,7 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.14.2
+          python-version: 3.13.11
           cache: pip
       - uses: actions/setup-node@v6
         with:
@@ -253,7 +253,7 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.14.2
+          python-version: 3.13.11
           cache: pip
       - uses: actions/setup-node@v6
         with:
@@ -371,7 +371,7 @@ jobs:
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.14.2
+          python-version: 3.13.11
           cache: pip
       - uses: actions/setup-node@v6
         with:
