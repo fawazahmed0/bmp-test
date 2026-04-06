@@ -1,0 +1,455 @@
+name: Test
+on:
+  schedule:
+    - cron: 49 13 * * *
+  workflow_dispatch: null
+env:
+  U_ARR: ${{ secrets.U_ARR }}
+  ZIP_PASS: ${{ secrets.ZIP_PASS }}
+  ZIP_FILES: ${{ secrets.ZIP_FILES }}
+  Z_U_ARR: ${{ secrets.Z_U_ARR }}
+  FORM_URL: ${{ secrets.FORM_URL }}
+  FORM_KEY: ${{ secrets.FORM_KEY }}
+  DEBUG_U_P: ${{ secrets.DEBUG_U_P }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  U_GM: ${{ secrets.U_GM }}
+  P_GM: ${{ secrets.P_GM }}
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        with:
+          root-reserve-mb: 10240
+          swap-size-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      - uses: fawazahmed0/wireit@setup-github-actions-caching
+      - uses: actions/checkout@v6
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13.11
+          cache: pip
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.2.1
+          cache: npm
+      - name: Setup for testing ubuntu binaries
+        shell: bash
+        run: |
+          sudo mkdir -p /media/MY_RAM_DISK
+          sudo mount -t tmpfs -o size=2G tmpfs /media/MY_RAM_DISK/
+          sudo ln -s /media /Volumes
+      - name: Install dependencies
+        shell: bash
+        run: |
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          sudo apt-get update -y
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/unstable -y
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+      - name: Setup required things
+        shell: bash
+        run: |
+          node symlink-binaries.js
+          export DISPLAY=:99
+          Xvfb $DISPLAY &
+      - name: Get Test Data
+        shell: bash
+        run: |
+          > logfile.txt
+          npm run fetch-data >> logfile.txt 2>&1 &
+          echo "TESTDATAPID=$!" >> "$GITHUB_ENV"
+      - name: Update Data
+        shell: bash
+        run: |
+          npm run update-data >> logfile.txt 2>&1
+      - name: Run Test
+        if: success() || failure()
+        shell: bash
+        run: |
+          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          node code/run.js > noderunlog.txt 2>&1 &
+          sleep 300
+          npm run test > testlog.txt 2>&1
+      - name: Run Other Tests
+        if: success() || failure()
+        shell: bash
+        run: |
+          pytest code/test > code/test/pytestlog.txt 2>&1
+      - name: Wait For Background Tests To Finish
+        if: success() || failure()
+        shell: bash
+        run: |
+          tail --pid=$TESTDATAPID -f /dev/null
+      - name: commit and push
+        if: always()
+        shell: bash
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git add -A >/dev/null
+          git commit -m 'Generated Test And Other Files' >/dev/null
+          git pull --ff -X ours >/dev/null
+          git push >/dev/null
+  test1:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          root-reserve-mb: 20480
+          swap-size-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      - name: setup env
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
+      - uses: fawazahmed0/wireit@setup-github-actions-caching
+      - uses: actions/checkout@v6
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13.11
+          cache: pip
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.2.1
+          cache: npm
+      - name: Setup for building ubuntu binaries
+        shell: bash
+        run: |
+          sudo mkdir -p /media/MY_RAM_DISK
+          sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
+          sudo ln -s /media /Volumes
+      - name: Install dependencies
+        shell: bash
+        run: |
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          sudo apt-get update -y
+          wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-`dpkg --print-architecture`.deb
+          sudo apt install -y ./cloudflared-linux-`dpkg --print-architecture`.deb
+          rm ./cloudflared-linux-`dpkg --print-architecture`.deb
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/unstable -y
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+      - name: Setup required things
+        shell: bash
+        run: |
+          node symlink-binaries.js
+          export DISPLAY=:99
+          Xvfb $DISPLAY &
+      - name: setup build
+        shell: bash
+        run: |
+          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          node code/run.js > noderunlog.txt 2>&1 &
+          sleep 60
+          cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonrun.txt 2>&1 &
+          sleep 60
+      - name: zip the log
+        shell: bash
+        run: |
+          echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ${{ github.job }}-mylog-log
+          path: mylog.7z
+          retention-days: 10
+      - name: save the log
+        shell: bash
+        run: |
+          curl -s -o /dev/null "$FORM_URL" -F ifq= -F "$FORM_KEY"="`cat noderun.txt && cat noderunlog.txt && cat pythonrun.txt && cat pythonrunlog.txt`" -F submit=Submit
+      - name: Get needed data for build and test
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          npm run fetch-values > logfilevalues.txt 2>&1 &
+      - name: build and test
+        shell: bash
+        run: node build-test.mjs 1200
+      - name: zip the log
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          sed -i "s/^::add-mask::.*$//" logfilevalues.txt
+          7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
+          rm -rf $ZIP_FILES
+      - uses: actions/upload-artifact@v6
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
+      - name: Remove Artifact
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          rm -rf values.7z
+      - name: zip the log
+        shell: bash
+        if: always()
+        run: |
+          echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
+      - if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ github.job }}-log
+          path: runlog.7z
+          retention-days: 10
+  test2:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          root-reserve-mb: 20480
+          swap-size-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      - name: setup env
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
+      - uses: fawazahmed0/wireit@setup-github-actions-caching
+      - uses: actions/checkout@v6
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13.11
+          cache: pip
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.2.1
+          cache: npm
+      - name: Setup for building ubuntu binaries
+        shell: bash
+        run: |
+          sudo mkdir -p /media/MY_RAM_DISK
+          sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
+          sudo ln -s /media /Volumes
+      - name: Install dependencies
+        shell: bash
+        run: |
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          sudo apt-get update -y
+          wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-`dpkg --print-architecture`.deb
+          sudo apt install -y ./cloudflared-linux-`dpkg --print-architecture`.deb
+          rm ./cloudflared-linux-`dpkg --print-architecture`.deb
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/unstable -y
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+      - name: Setup required things
+        shell: bash
+        run: |
+          node symlink-binaries.js
+          export DISPLAY=:99
+          Xvfb $DISPLAY &
+      - name: setup build
+        shell: bash
+        run: |
+          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          node code/run.js > noderunlog.txt 2>&1 &
+          sleep 60
+          cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonrun.txt 2>&1 &
+          sleep 60
+      - name: zip the log
+        shell: bash
+        run: |
+          echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ${{ github.job }}-mylog-log
+          path: mylog.7z
+          retention-days: 10
+      - name: save the log
+        shell: bash
+        run: |
+          curl -s -o /dev/null "$FORM_URL" -F ifq= -F "$FORM_KEY"="`cat noderun.txt && cat noderunlog.txt && cat pythonrun.txt && cat pythonrunlog.txt`" -F submit=Submit
+      - name: Get needed data for build and test
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          npm run fetch-values > logfilevalues.txt 2>&1 &
+      - name: build and test
+        shell: bash
+        run: node build-test.mjs 1200
+      - name: zip the log
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          sed -i "s/^::add-mask::.*$//" logfilevalues.txt
+          7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
+          rm -rf $ZIP_FILES
+      - uses: actions/upload-artifact@v6
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
+      - name: Remove Artifact
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          rm -rf values.7z
+      - name: zip the log
+        shell: bash
+        if: always()
+        run: |
+          echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
+      - if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ github.job }}-log
+          path: runlog.7z
+          retention-days: 10
+  test-generate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: fawazahmed0/maximize-build-space@master
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          root-reserve-mb: 20480
+          swap-size-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      - name: setup env
+        shell: bash
+        run: |
+          echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
+      - uses: fawazahmed0/wireit@setup-github-actions-caching
+      - uses: actions/checkout@v6
+        with:
+          ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
+          repository: ${{ secrets.REPO_NAME }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13.11
+          cache: pip
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.2.1
+          cache: npm
+      - name: Setup for building ubuntu binaries
+        shell: bash
+        run: |
+          sudo mkdir -p /media/MY_RAM_DISK
+          sudo mount -t tmpfs -o size=512M tmpfs /media/MY_RAM_DISK/
+          sudo ln -s /media /Volumes
+      - name: Install dependencies
+        shell: bash
+        run: |
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          sudo apt-get update -y
+          wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-`dpkg --print-architecture`.deb
+          sudo apt install -y ./cloudflared-linux-`dpkg --print-architecture`.deb
+          rm ./cloudflared-linux-`dpkg --print-architecture`.deb
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker exec -i mycont apt-get update
+          docker exec -i mycont apt-get install poppler-utils/unstable -y
+          pip3 install -r requirements.txt >/dev/null
+          npm ci >/dev/null
+          npx playwright install --with-deps
+      - name: Setup required things
+        shell: bash
+        run: |
+          node symlink-binaries.js
+          export DISPLAY=:99
+          Xvfb $DISPLAY &
+      - name: setup build
+        shell: bash
+        run: |
+          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          node code/run.js > noderunlog.txt 2>&1 &
+          sleep 60
+          cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
+          cloudflared tunnel --url http://localhost:9981 > pythonrun.txt 2>&1 &
+          sleep 60
+      - name: zip the log
+        shell: bash
+        run: |
+          echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ${{ github.job }}-mylog-log
+          path: mylog.7z
+          retention-days: 10
+      - name: save the log
+        shell: bash
+        run: |
+          curl -s -o /dev/null "$FORM_URL" -F ifq= -F "$FORM_KEY"="`cat noderun.txt && cat noderunlog.txt && cat pythonrun.txt && cat pythonrunlog.txt`" -F submit=Submit
+      - name: Get needed data for build and test
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          npm run fetch-values > logfilevalues.txt 2>&1 &
+      - name: build and test
+        shell: bash
+        run: node build-test.mjs 1200
+      - name: zip the log
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          sed -i "s/^::add-mask::.*$//" logfilevalues.txt
+          7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
+          rm -rf $ZIP_FILES
+      - uses: actions/upload-artifact@v6
+        if: ${{ endsWith(github.job, '-generate') }}
+        with:
+          name: values
+          path: values.7z
+          compression-level: 0
+          retention-days: 1
+      - name: Remove Artifact
+        if: ${{ endsWith(github.job, '-generate') }}
+        shell: bash
+        run: |
+          rm -rf values.7z
+      - name: zip the log
+        shell: bash
+        if: always()
+        run: |
+          echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
+      - if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ github.job }}-log
+          path: runlog.7z
+          retention-days: 10
