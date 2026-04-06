@@ -38,7 +38,7 @@ jobs:
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.2.1
+          node-version: 25.9.0
           cache: npm
       - name: Setup for testing ubuntu binaries
         shell: bash
@@ -130,7 +130,7 @@ jobs:
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.2.1
+          node-version: 25.9.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -247,7 +247,7 @@ jobs:
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.2.1
+          node-version: 25.9.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -364,7 +364,7 @@ jobs:
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.2.1
+          node-version: 25.9.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
