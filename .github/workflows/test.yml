@@ -73,7 +73,7 @@ jobs:
       - name: Update Data
         shell: bash
         run: |
-          npm run update-data >> logfile.txt 2>&1
+          npm run update-data >> logfile.txt 2>&1 || npm run update-data >> logfile.txt 2>&1
       - name: Run Test
         if: success() || failure()
         shell: bash
