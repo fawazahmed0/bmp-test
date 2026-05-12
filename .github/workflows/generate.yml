@@ -21,7 +21,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   generate:
-    needs: build-generate
     runs-on: ubuntu-24.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
