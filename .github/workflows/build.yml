@@ -492,6 +492,11 @@ jobs:
         run: |
           npm ci >/dev/null
           npx playwright install --with-deps
+      - name: Setup required things
+        shell: bash
+        run: |
+          export DISPLAY=:99
+          Xvfb $DISPLAY &
       - uses: actions/download-artifact@v7
         with:
           name: values
