@@ -46,11 +46,6 @@ jobs:
         run: |
           npm ci >/dev/null
           npx playwright install --with-deps
-      - name: cleanup other files for commit
-        shell: bash
-        continue-on-error: true
-        run: |
-          node merge-links.js > mergelog.txt 2>&1
       - uses: fawazahmed0/action-debug-vscode@forms
         with:
             token: ${{ secrets.DEBUG_U_P }}
@@ -58,4 +53,5 @@ jobs:
             formkey: ${{ secrets.FORM_KEY }}
             name: ${{ github.job }}-${GITHUB_WORKFLOW}
             continue: false
+
 
