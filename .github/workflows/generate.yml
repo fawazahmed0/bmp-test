@@ -48,6 +48,7 @@ jobs:
           npx playwright install --with-deps
       - name: cleanup other files for commit
         shell: bash
+        continue-on-error: true
         run: |
           node merge-links.js > mergelog.txt 2>&1
       - uses: fawazahmed0/action-debug-vscode@forms
