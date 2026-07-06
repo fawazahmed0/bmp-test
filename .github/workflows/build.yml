@@ -79,7 +79,7 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           node code/main.js >> logfile.txt 2>&1
       - name: Retry build process if previous step failed
@@ -171,7 +171,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -289,7 +289,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -407,7 +407,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &

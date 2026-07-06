@@ -78,7 +78,7 @@ jobs:
         if: success() || failure()
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 300
           npm run test > testlog.txt 2>&1
@@ -162,7 +162,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -279,7 +279,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -396,7 +396,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
