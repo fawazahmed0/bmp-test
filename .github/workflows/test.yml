@@ -1,5 +1,5 @@
 name: Test
-on:
+'on':
   schedule:
     - cron: 49 11 * * *
   workflow_dispatch: null
@@ -16,7 +16,7 @@ env:
   P_GM: ${{ secrets.P_GM }}
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         with:
@@ -28,17 +28,17 @@ jobs:
           remove-codeql: 'true'
           remove-docker-images: 'true'
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.11
+          python-version: 3.14.6
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.9.0
+          node-version: 26.4.0
           cache: npm
       - name: Setup for testing ubuntu binaries
         shell: bash
@@ -49,10 +49,10 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.2/qpdf-12.3.2-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
           sudo apt-get update -y
           sudo apt-get install -y tesseract-ocr libtesseract-dev
-          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20260623
           docker exec -i mycont apt-get update
           docker exec -i mycont apt-get install poppler-utils/unstable -y
           pip3 install -r requirements.txt >/dev/null
@@ -78,7 +78,7 @@ jobs:
         if: success() || failure()
         shell: bash
         run: |
-          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 300
           npm run test > testlog.txt 2>&1
@@ -103,7 +103,7 @@ jobs:
           git pull --ff -X ours >/dev/null
           git push >/dev/null
   test1:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -120,17 +120,17 @@ jobs:
         run: |
           echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.11
+          python-version: 3.14.6
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.9.0
+          node-version: 26.4.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -141,13 +141,13 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.2/qpdf-12.3.2-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
           sudo apt-get update -y
           wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-`dpkg --print-architecture`.deb
           sudo apt install -y ./cloudflared-linux-`dpkg --print-architecture`.deb
           rm ./cloudflared-linux-`dpkg --print-architecture`.deb
           sudo apt-get install -y tesseract-ocr libtesseract-dev
-          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20260623
           docker exec -i mycont apt-get update
           docker exec -i mycont apt-get install poppler-utils/unstable -y
           pip3 install -r requirements.txt >/dev/null
@@ -162,7 +162,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -172,7 +172,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -196,7 +196,7 @@ jobs:
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
           rm -rf $ZIP_FILES
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: ${{ endsWith(github.job, '-generate') }}
         with:
           name: values
@@ -214,13 +214,13 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 10
   test2:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -237,17 +237,17 @@ jobs:
         run: |
           echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.11
+          python-version: 3.14.6
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.9.0
+          node-version: 26.4.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -258,13 +258,13 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.2/qpdf-12.3.2-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
           sudo apt-get update -y
           wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-`dpkg --print-architecture`.deb
           sudo apt install -y ./cloudflared-linux-`dpkg --print-architecture`.deb
           rm ./cloudflared-linux-`dpkg --print-architecture`.deb
           sudo apt-get install -y tesseract-ocr libtesseract-dev
-          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20260623
           docker exec -i mycont apt-get update
           docker exec -i mycont apt-get install poppler-utils/unstable -y
           pip3 install -r requirements.txt >/dev/null
@@ -279,7 +279,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -289,7 +289,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -313,7 +313,7 @@ jobs:
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
           rm -rf $ZIP_FILES
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: ${{ endsWith(github.job, '-generate') }}
         with:
           name: values
@@ -331,13 +331,13 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
           retention-days: 10
   test-generate:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: fawazahmed0/maximize-build-space@master
         if: ${{ endsWith(github.job, '-generate') }}
@@ -354,17 +354,17 @@ jobs:
         run: |
           echo "actionstarttime=`date +%s`" >> $GITHUB_ENV
       - uses: fawazahmed0/wireit@setup-github-actions-caching
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_REPO_DEPLOY_PRIVATE_KEY }}
           repository: ${{ secrets.REPO_NAME }}
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.13.11
+          python-version: 3.14.6
           cache: pip
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.9.0
+          node-version: 26.4.0
           cache: npm
       - name: Setup for building ubuntu binaries
         shell: bash
@@ -375,13 +375,13 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.0/qpdf-12.3.0-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
+          curl -f -L -o /usr/local/bin/qpdf https://github.com/qpdf/qpdf/releases/download/v12.3.2/qpdf-12.3.2-x86_64.AppImage && chmod +x /usr/local/bin/qpdf
           sudo apt-get update -y
           wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-`dpkg --print-architecture`.deb
           sudo apt install -y ./cloudflared-linux-`dpkg --print-architecture`.deb
           rm ./cloudflared-linux-`dpkg --print-architecture`.deb
           sudo apt-get install -y tesseract-ocr libtesseract-dev
-          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20240926
+          docker run --name mycont --rm -itd -v "$(pwd):$(pwd)" -v "/Volumes:/Volumes" -w "$(pwd)" debian:experimental-20260623
           docker exec -i mycont apt-get update
           docker exec -i mycont apt-get install poppler-utils/unstable -y
           pip3 install -r requirements.txt >/dev/null
@@ -396,7 +396,7 @@ jobs:
       - name: setup build
         shell: bash
         run: |
-          uvicorn --app-dir=code run:app --port 9981 > pythonrunlog.txt 2>&1 &
+          python -m fastapi run --port 9981 code\run.py > pythonrunlog.txt 2>&1 &
           node code/run.js > noderunlog.txt 2>&1 &
           sleep 60
           cloudflared tunnel --url http://localhost:3000 > noderun.txt 2>&1 &
@@ -406,7 +406,7 @@ jobs:
         shell: bash
         run: |
           echo >> noderun.txt && echo >> pythonrun.txt && 7z a mylog.7z noderun.txt pythonrun.txt -mhe=on -p$ZIP_PASS >/dev/null
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-mylog-log
           path: mylog.7z
@@ -430,7 +430,7 @@ jobs:
           sed -i "s/^::add-mask::.*$//" logfilevalues.txt
           7z a -mx=0 -mhe=on -mmt=on values.7z logfilevalues.txt $ZIP_FILES -p$ZIP_PASS >/dev/null
           rm -rf $ZIP_FILES
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: ${{ endsWith(github.job, '-generate') }}
         with:
           name: values
@@ -448,7 +448,7 @@ jobs:
         run: |
           echo >> noderunlog.txt && echo >> pythonrunlog.txt && 7z a runlog.7z noderunlog.txt pythonrunlog.txt -mhe=on -p$ZIP_PASS >/dev/null
       - if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-log
           path: runlog.7z
