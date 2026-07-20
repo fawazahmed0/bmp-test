@@ -75,7 +75,7 @@ jobs:
         run: |
           npm run update-data >> logfile.txt 2>&1 || npm run update-data >> logfile.txt 2>&1
       - name: Run Test
-        if: success() || failure()
+        continue-on-error: true
         shell: bash
         run: |
           python -m fastapi run --port 9981 code/run.py > pythonrunlog.txt 2>&1 &
@@ -83,7 +83,7 @@ jobs:
           sleep 300
           npm run test > testlog.txt 2>&1
       - name: Run Other Tests
-        if: success() || failure()
+        continue-on-error: true
         shell: bash
         run: |
           pytest code/test > code/test/pytestlog.txt 2>&1
