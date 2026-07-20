@@ -89,8 +89,7 @@ jobs:
           pytest code/test > code/test/pytestlog.txt 2>&1
       - name: Wait For Background Tasks To Finish
         if: success() || failure()
-        wait:
-          - get-test-data
+        wait: [get-test-data]
       - name: commit and push
         if: always()
         shell: bash
