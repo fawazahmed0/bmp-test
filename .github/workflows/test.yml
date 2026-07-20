@@ -65,11 +65,11 @@ jobs:
           export DISPLAY=:99
           Xvfb $DISPLAY &
       - name: Get Test Data
+        background: true
+        id: get-test-data
         shell: bash
         run: |
-          > logfile.txt
-          npm run fetch-data >> logfile.txt 2>&1 &
-          echo "TESTDATAPID=$!" >> "$GITHUB_ENV"
+          npm run fetch-data >> logfile.txt 2>&1
       - name: Update Data
         shell: bash
         run: |
@@ -87,11 +87,10 @@ jobs:
         shell: bash
         run: |
           pytest code/test > code/test/pytestlog.txt 2>&1
-      - name: Wait For Background Tests To Finish
+      - name: Wait For Background Tasks To Finish
         if: success() || failure()
-        shell: bash
-        run: |
-          wait $TESTDATAPID 2>&1
+        wait:
+          - get-test-data
       - name: commit and push
         if: always()
         shell: bash
